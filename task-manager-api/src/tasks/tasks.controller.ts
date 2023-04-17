@@ -1,13 +1,20 @@
 import { Task } from "./tasks.entity";
+import { User } from '../users/user.entity'
 import { AppDataSource } from "../../index";
 import { instanceToPlain, plainToInstance } from 'class-transformer';
 import { Request, Response } from 'express';
 import { validationResult } from 'express-validator';
 import { UpdateResult } from 'typeorm';
 
+interface AuthenticatedRequest extends Request {
+    user: User;
+}
+
 class TasksController {
     // Method for the get route
-    public async getAll(req: Request, res: Response): Promise<Response> {
+    public async getAll(req: AuthenticatedRequest, res: Response): Promise<Response> {
+        // retrieve currently logged in user
+        const currentUser = req.user;
         // Declare a variable to hold all tasks
         let allTasks: Task[];
         
@@ -17,6 +24,9 @@ class TasksController {
                 Task,
             )
             .find({
+                where: {
+                    user: currentUser
+                },
                 order: {
                     date: 'ASC',
                 },
@@ -30,7 +40,7 @@ class TasksController {
     }
 
     // Method for the post route
-    public async create(req: Request, res: Response): Promise<Response> {
+    public async create(req: AuthenticatedRequest, res: Response): Promise<Response> {
         const errors = validationResult(req);
         
         if(!errors.isEmpty()){
@@ -38,6 +48,9 @@ class TasksController {
                 .status(400)
                 .json({ errors: errors.array() });
         }
+
+        // get the user from the request
+        const user: User = req.user;
 
         // Create a new instance of a task
         const newTask = new Task();
@@ -48,6 +61,7 @@ class TasksController {
         newTask.description = req.body.description;
         newTask.priority = req.body.priority;
         newTask.status = req.body.status;
+        newTask.user = user;
 
         // save the newly created task to the database
         let createdTask: Task;
@@ -64,7 +78,7 @@ class TasksController {
     }
 
     // Method for put route
-    public async update(req: Request, res: Response): Promise<Response> {
+    public async update(req: AuthenticatedRequest, res: Response): Promise<Response> {
         const errors = validationResult(req);
         
         if(!errors.isEmpty()){
@@ -73,11 +87,14 @@ class TasksController {
                 .json({ errors: errors.array() });
         }
 
+        // get the user from the request
+        const user: User = req.user;
+
         // Try to find the task and see if it exists
         let task: Task | null;
         try {
             task = await AppDataSource.getRepository(Task).findOne({
-                where: { id: req.body.id },
+                where: { id: req.body.id, user: user },
             })
         } catch (errors) {
             return res.json({error: 'Internal server error'}).status(500);
