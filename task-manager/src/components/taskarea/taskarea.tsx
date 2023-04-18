@@ -18,7 +18,6 @@ export const Taskarea: FC = (): ReactElement => {
 
   // state variables for sorting and filtering tasks
   const [sortOption, setSortOption] = useState('');
-  const [filterOption, setFilterOption] = useState('');
 
   const { error, isLoading, data, refetch } = useQuery(
     ['tasks'],
@@ -71,22 +70,7 @@ export const Taskarea: FC = (): ReactElement => {
     })
   }
 
-  //functions for sorting and filtering
-  function handleSortByTitle () {
-    setSortOption('title')
-  }
-
-  function handleSortByStatus () {
-    setSortOption('status')
-  }
-
-  function handleSortByDate () {
-    setSortOption('date')
-  }
-
-  function handleFilterByStatues (status: string) {
-    setFilterOption(status)
-  }
+  //function for sorting
 
   function sortTasks(tasks: ITaskApi[], sortOption: string) {
     if (sortOption === 'title') {
@@ -161,7 +145,10 @@ export const Taskarea: FC = (): ReactElement => {
               labelId='sort-by'
               id='sort-by-select'
               value={sortOption}
-              onChange={(e) => setSortOption(e.target.value)}
+              onChange={(e) => {
+                setSortOption(e.target.value);
+                // sortTasks(data, sortOption)
+              }}
             >
               <MenuItem value='title'>Title</MenuItem>
               <MenuItem value='status'>Status</MenuItem>
