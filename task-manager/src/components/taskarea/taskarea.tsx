@@ -1,5 +1,5 @@
-import React, { FC, ReactElement, useContext, useEffect } from 'react';
-import { Grid, Box, Alert, LinearProgress } from '@mui/material';
+import React, { FC, ReactElement, useContext, useEffect, useState } from 'react';
+import { Grid, Box, Alert, LinearProgress, Select, MenuItem, InputLabel } from '@mui/material';
 import { format } from 'date-fns';
 import { TaskCounter } from '../taskCounter/taskCounter';
 import { Task } from '../task/task';
@@ -15,6 +15,10 @@ import { TaskStatusChangedContext } from '../../context';
 export const Taskarea: FC = (): ReactElement => {
 
   const taskUpdatedContext = useContext(TaskStatusChangedContext);
+
+  // state variables for sorting and filtering tasks
+  const [sortOption, setSortOption] = useState('');
+  const [filterOption, setFilterOption] = useState('');
 
   const { error, isLoading, data, refetch } = useQuery(
     ['tasks'],
@@ -67,6 +71,37 @@ export const Taskarea: FC = (): ReactElement => {
     })
   }
 
+  //functions for sorting and filtering
+  function handleSortByTitle () {
+    setSortOption('title')
+  }
+
+  function handleSortByStatus () {
+    setSortOption('status')
+  }
+
+  function handleSortByDate () {
+    setSortOption('date')
+  }
+
+  function handleFilterByStatues (status: string) {
+    setFilterOption(status)
+  }
+
+  function sortTasks(tasks: ITaskApi[], sortOption: string) {
+    if (sortOption === 'title') {
+      return tasks.sort((a, b) => a.title.localeCompare(b.title))
+    } else if (sortOption === 'status') {
+      return tasks.sort((a, b) => a.status.localeCompare(b.status))
+    } else {
+      return tasks.sort((a, b) => {
+        const dateA = new Date(a.date);
+        const dateB = new Date(b.date);
+        return dateA.getTime() - dateB.getTime()
+      })
+    }
+  }
+
   return (
     <Grid item md={8} px={4}>
       <Box mb={8} px={4}>
@@ -108,6 +143,31 @@ export const Taskarea: FC = (): ReactElement => {
                 data ? countTasks(data, Status.completed) : undefined
               }
             />
+          </Grid>
+          <Grid
+              item
+              display='flex'
+              flexDirection='row'
+              justifyContent='space-between'
+              alignItems='flex-end'
+              mx={20}
+              md={10}
+              xs={12}
+              mb={8}
+          >
+           <div>
+            <InputLabel htmlFor="sort-by">Sort by:</InputLabel>
+            <Select
+              labelId='sort-by'
+              id='sort-by-select'
+              value={sortOption}
+              onChange={(e) => setSortOption(e.target.value)}
+            >
+              <MenuItem value='title'>Title</MenuItem>
+              <MenuItem value='status'>Status</MenuItem>
+              <MenuItem value='date'>Due Date</MenuItem>
+            </Select>
+           </div>
           </Grid>
           {/* tasks */}
           <Grid 

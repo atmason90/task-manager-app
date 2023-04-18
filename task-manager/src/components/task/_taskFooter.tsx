@@ -44,6 +44,24 @@ export const TaskFooter: FC<ITaskFooter> = (props): ReactElement => {
     >
         Mark Complete
     </Button>
+    <Button
+        variant='contained'
+        color='warning'
+        size='small'
+        sx={{color: '#ffffff'}}
+        // onClick={(e) => onClick(e, id)}
+    >
+        Edit
+    </Button>
+    <Button
+        variant='contained'
+        color='error'
+        size='small'
+        sx={{color: '#ffffff'}}
+        // onClick={(e) => onClick(e, id)}
+    >
+        Delete
+    </Button>
    </Box>
   )
 }
