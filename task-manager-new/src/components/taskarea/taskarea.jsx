@@ -1,90 +1,90 @@
-import React, { FC, ReactElement, useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Grid, Box, Alert, LinearProgress, Select, MenuItem, InputLabel } from '@mui/material';
 import { format } from 'date-fns';
 import { TaskCounter } from '../taskCounter/taskCounter';
 import { Task } from '../task/task';
-import { useQuery, useMutation } from '@tanstack/react-query';
-import { sendApiRequest } from '../../helpers/sendApiRequest';
-import { ITaskApi } from './interfaces/ITaskApi';
-import { Status } from '../createTaskForm/enums/status';
-import { IUpdateTask } from '../createTaskForm/interfaces/IUpdateTask';
+// import { useQuery, useMutation } from '@tanstack/react-query';
+// import { sendApiRequest } from '../../helpers/sendApiRequest';
+// import { ITaskApi } from './interfaces/ITaskApi';
+// import { Status } from '../createTaskForm/enums/status';
+// import { IUpdateTask } from '../createTaskForm/interfaces/IUpdateTask';
 import { countTasks } from './helpers/countTasks';
-import { TaskStatusChangedContext } from '../../context';
+// import { TaskStatusChangedContext } from '../../context';
 
 
-export const Taskarea: FC = (): ReactElement => {
+export const Taskarea = () => {
 
-  const taskUpdatedContext = useContext(TaskStatusChangedContext);
+//   const taskUpdatedContext = useContext(TaskStatusChangedContext);
 
   // state variables for sorting and filtering tasks
   const [sortOption, setSortOption] = useState('');
 
-  const { error, isLoading, data, refetch } = useQuery(
-    ['tasks'],
-    async () => {
-      return await sendApiRequest<ITaskApi[]>(
-        'http://localhost:3001/tasks',
-        'GET',
-      );
-    },
-  );
+//   const { error, isLoading, data, refetch } = useQuery(
+//     ['tasks'],
+//     async () => {
+//       return await sendApiRequest<ITaskApi[]>(
+//         'http://localhost:3001/tasks',
+//         'GET',
+//       );
+//     },
+//   );
 
   // Update task mutation
-  const updateTaskMutation = useMutation(
-    (data: IUpdateTask) => sendApiRequest(
-      'http://localhost:3001/tasks',
-      'PUT',
-      data
-    )
-  );
+//   const updateTaskMutation = useMutation(
+//     (data: IUpdateTask) => sendApiRequest(
+//       'http://localhost:3001/tasks',
+//       'PUT',
+//       data
+//     )
+//   );
 
-  useEffect(() => {
-    refetch();
-  }, [taskUpdatedContext.updated]);
+//   useEffect(() => {
+//     refetch();
+//   }, [taskUpdatedContext.updated]);
 
-  useEffect(() => {
-    if(updateTaskMutation.isSuccess) {
-      taskUpdatedContext.toggle();
-    }
-  }, [updateTaskMutation.isSuccess])
+//   useEffect(() => {
+//     if(updateTaskMutation.isSuccess) {
+//       taskUpdatedContext.toggle();
+//     }
+//   }, [updateTaskMutation.isSuccess])
 
-  function onStatusChangeHandler (
-    e: React.ChangeEvent<HTMLInputElement>,
-    id: string,
-  ) {
-    updateTaskMutation.mutate({
-      id,
-      status: e.target.checked ? Status.inProgress : Status.todo,
-    })
-  }
+//   function onStatusChangeHandler (
+//     e: React.ChangeEvent<HTMLInputElement>,
+//     id: string,
+//   ) {
+//     updateTaskMutation.mutate({
+//       id,
+//       status: e.target.checked ? Status.inProgress : Status.todo,
+//     })
+//   }
 
-  function markCompleteHandler (
-    e: 
-    | React.MouseEvent<HTMLButtonElement> 
-    | React.MouseEvent<HTMLAnchorElement>,
-    id: string,
-  ) {
-    updateTaskMutation.mutate({
-      id,
-      status: Status.completed,
-    })
-  }
+//   function markCompleteHandler (
+//     e: 
+//     | React.MouseEvent<HTMLButtonElement> 
+//     | React.MouseEvent<HTMLAnchorElement>,
+//     id: string,
+//   ) {
+//     updateTaskMutation.mutate({
+//       id,
+//       status: Status.completed,
+//     })
+//   }
 
   //function for sorting
 
-  function sortTasks(tasks: ITaskApi[], sortOption: string) {
-    if (sortOption === 'title') {
-      return tasks.sort((a, b) => a.title.localeCompare(b.title))
-    } else if (sortOption === 'status') {
-      return tasks.sort((a, b) => a.status.localeCompare(b.status))
-    } else {
-      return tasks.sort((a, b) => {
-        const dateA = new Date(a.date);
-        const dateB = new Date(b.date);
-        return dateA.getTime() - dateB.getTime()
-      })
-    }
-  }
+//   function sortTasks(tasks: ITaskApi[], sortOption: string) {
+//     if (sortOption === 'title') {
+//       return tasks.sort((a, b) => a.title.localeCompare(b.title))
+//     } else if (sortOption === 'status') {
+//       return tasks.sort((a, b) => a.status.localeCompare(b.status))
+//     } else {
+//       return tasks.sort((a, b) => {
+//         const dateA = new Date(a.date);
+//         const dateB = new Date(b.date);
+//         return dateA.getTime() - dateB.getTime()
+//       })
+//     }
+//   }
 
   return (
     <Grid item md={8} px={4}>
@@ -110,22 +110,22 @@ export const Taskarea: FC = (): ReactElement => {
             mb={8}
           >
             <TaskCounter
-              status={Status.todo}
-              count={
-                data ? countTasks(data, Status.todo) : undefined
-              }
+              status={'todo'}
+            //   count={
+            //     data ? countTasks(data, Status.todo) : undefined
+            //   }
             />
             <TaskCounter 
-              status={Status.inProgress}
-              count={
-                data ? countTasks(data, Status.inProgress) : undefined
-              }
+              status={'inProgress'}
+            //   count={
+            //     data ? countTasks(data, Status.inProgress) : undefined
+            //   }
             />
             <TaskCounter 
-              status={Status.completed}
-              count={
-                data ? countTasks(data, Status.completed) : undefined
-              }
+              status={'completed'}
+            //   count={
+            //     data ? countTasks(data, Status.completed) : undefined
+            //   }
             />
           </Grid>
           <Grid
@@ -165,7 +165,7 @@ export const Taskarea: FC = (): ReactElement => {
             md={8}
           >
             <>
-            {error && (
+            {/* {error && (
             <Alert severity='error'>
               There was an error fetching your tasks
             </Alert>
@@ -174,8 +174,8 @@ export const Taskarea: FC = (): ReactElement => {
             <Alert severity='warning'>
               You do not have any tasks create yet. Start by creating a task.
             </Alert>
-            )}
-            {isLoading ? (
+            )} */}
+            {/* {isLoading ? (
             <LinearProgress />
             ) : (
               Array.isArray(data) &&
@@ -192,14 +192,14 @@ export const Taskarea: FC = (): ReactElement => {
                       description={each.description}
                       priority={each.priority}
                       status={each.status}
-                      onStatusChange={onStatusChangeHandler}
-                      onClick={markCompleteHandler}
+                    //   onStatusChange={onStatusChangeHandler}
+                    //   onClick={markCompleteHandler}
                     />
                 ): (
                   false
                 );
               })
-            )}
+            )} */}
             </>
           </Grid>
       </Grid>
