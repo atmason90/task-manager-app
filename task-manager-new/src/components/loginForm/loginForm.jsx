@@ -4,6 +4,7 @@ import Button from '@mui/material/Button';
 
 function LoginForm() {
   const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('')
 
   const handleLogin = () => {
     // TODO: handle login logic here
@@ -17,6 +18,12 @@ function LoginForm() {
         variant="outlined"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
+      />
+        <TextField
+        label="Email"
+        variant="outlined"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
       />
       <Button variant="contained" onClick={handleLogin}>
         Login
