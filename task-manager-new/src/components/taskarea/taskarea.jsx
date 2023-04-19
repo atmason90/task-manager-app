@@ -110,7 +110,7 @@ export const Taskarea = () => {
             mb={8}
           >
             <TaskCounter
-              status={'to-do'}
+              status={'todo'}
             //   count={
             //     data ? countTasks(data, Status.todo) : undefined
             //   }

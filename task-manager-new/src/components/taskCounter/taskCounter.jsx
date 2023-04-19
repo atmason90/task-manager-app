@@ -1,13 +1,12 @@
 import React from 'react';
 import { Avatar, Box, Typography } from '@mui/material';
-import { Status } from '../createTaskForm/enums/status';
 import { emitCorrectBorderColors } from './helpers/emitCorrectBorderColor';
 import { emitCorrectLabel } from './helpers/emitCorrectLabel';
 import PropTypes from 'prop-types';
 
 export const TaskCounter = (props) => {
     // Destructure props
-    const { status = Status.completed, count = 0 } = props
+    const { status = 'completed', count = 0 } = props
     
     return (
         <>
@@ -48,8 +47,8 @@ export const TaskCounter = (props) => {
 TaskCounter.propTypes = {
     count: PropTypes.number,
     status: PropTypes.oneOf([
-        Status.todo, 
-        Status.inProgress, 
-        Status.completed,
+        'todo', 
+        'inProgress', 
+        'completed',
     ]),
 };
