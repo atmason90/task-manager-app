@@ -1,0 +1,5 @@
+task-manager-backend/log/*
+task-manager-backend/tmp/*
+task-manager-backend/tmp/pids/*
+
+.idea
