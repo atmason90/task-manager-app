@@ -10,6 +10,9 @@ import { Dashboard } from './pages/dashboard/dashboard';
 
 
 const App = () => {
+  fetch("http://localhost:3000/users")
+    .then(res => console.log(res.json()))
+    .then(data => console.log(data))
   return (
         <ThemeProvider theme={customTheme}>
           <CssBaseline />
