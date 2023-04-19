@@ -38,6 +38,15 @@ class UsersController < ApplicationController
     @user.destroy
   end
 
+  def search
+    @user = User.find_by_email(user_params[:email])
+    if @user
+      render json: @user
+    else
+      render status: 404, json: { error: "User not found"}
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
@@ -46,6 +55,6 @@ class UsersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def user_params
-      params.require(:user).permit(:name)
+      params.require(:user).permit(:name, :email)
     end
 end

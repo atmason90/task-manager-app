@@ -8,6 +8,11 @@ function LoginForm() {
 
   const handleLogin = () => {
     // TODO: handle login logic here
+    fetch(`http://localhost:3000/users/search?email=${email}`)
+    .then(response => response.json())
+    .then(data => {
+      console.log(data)
+    })
     console.log(`Logging in with username: ${username}`);
   };
 
