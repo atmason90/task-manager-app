@@ -1,11 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Avatar, Box, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 
 
 export const Profile = (props) => {
+    const email = JSON.parse(localStorage.getItem('user'))
+    const [username, setUsername] = useState('')
+  
+    fetch(`http://dove.task-manager-backend.c66.me/users/search?email=${email}`)
+    .then(response => response.json())
+    .then(data => {
+      console.log(data)  
+      setUsername(data.name)
+    })
+    .catch(error => console.error(error))
+
     // Destructure Props
-    const { name = 'John' } = props;
+    const { name = username } = props;
+
     return (
         // container for profile
         <Box

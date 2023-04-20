@@ -14,9 +14,6 @@ export const CreateTaskForm = () => {
     const [priority, setPriority] = useState('normal');
     const [showSuccess, setShowSuccess] = useState(false);
 
-
-    // Create task mutation
-
     function createTaskHandler() {
         if(!title || !date || !description) {
             return;
@@ -24,29 +21,13 @@ export const CreateTaskForm = () => {
         const task = {
             title,
             description,
-            date: date.toString(),
+            date,
             status,
             priority,
         };
-        // createTaskMutation.mutate(task);
     };
 
-    // Manage side effects inside the app
-    // useEffect(() => {
-    //     if(createTaskMutation.isSuccess) {
-    //         setShowSuccess(true);
-    //         tasksUpdatedContext.toggle();
-    //     }
-    //     const successTimeout = setTimeout(() => {
-    //         setShowSuccess(false);
-    //     }, 7000);
-    //     return () => {
-    //         clearTimeout(successTimeout);
-    //     }
-    // }, 
-    // [
-    //     createTaskMutation.isSuccess
-    // ]);
+  
 
     return (
         <Box

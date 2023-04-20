@@ -21,7 +21,7 @@ export const TaskDateField = (props) => {
         >
             <DesktopDatePicker 
                 label='Task Date'
-                inputFormat='dd/MM/yyyy'
+                inputFormat='yyyy/MM/dd'
                 value={value}
                 onChange={onChange}
                 disabled={disabled}
