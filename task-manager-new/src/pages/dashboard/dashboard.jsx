@@ -14,23 +14,36 @@ export const Dashboard = () => {
   
     const handleLogin = () => {
       // TODO: handle login logic here
-      fetch(`https://dove.task-manager-backend.c66.me/users/search?email=${email}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
+      fetch(`http://dove.task-manager-backend.c66.me/users/search?email=${email}`)
       .then(response => response.json())
       .then(data => {
         console.log(data)
+        console.log(`Logging in with username: ${username}`);
+        setLoggedIn(true)
       })
       .catch(error => console.error(error))
-      console.log(`Logging in with username: ${username}`);
-      setLoggedIn(true)
+      
     };
 
     const handleSignup = () => {
-        console.log(`Signing up with username: ${username}`)
+        fetch(`http://dove.task-manager-backend.c66.me/users`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: username,
+                email: email
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            console.log(`Signing up with username: ${username}`)
+            setLoggedIn(true)
+    
+        })
+        .catch(error => console.log(error))
     }
 
     return(
