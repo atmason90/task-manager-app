@@ -14,7 +14,7 @@ export const Dashboard = () => {
   
     const handleLogin = () => {
       // TODO: handle login logic here
-      fetch(`http://dove.task-manager-backend.c66.me/users/search?email=${email}`)
+      fetch(`https://dove.task-manager-backend.c66.me/users/search?email=${email}`)
       .then(response => response.json())
       .then(data => {
         console.log(data)
@@ -27,7 +27,7 @@ export const Dashboard = () => {
     };
 
     const handleSignup = () => {
-        fetch(`http://dove.task-manager-backend.c66.me/users`, {
+        fetch(`https://dove.task-manager-backend.c66.me/users`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

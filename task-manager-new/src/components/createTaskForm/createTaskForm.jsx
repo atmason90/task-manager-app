@@ -24,11 +24,11 @@ export const CreateTaskForm = () => {
           return;
         };
         const userEmail = localStorage.getItem('user').replace(/"/g, '');
-        fetch(`http://dove.task-manager-backend.c66.me/users/search?email=${userEmail}`)
+        fetch(`https://dove.task-manager-backend.c66.me/users/search?email=${userEmail}`)
           .then(response => response.json())
           .then(data => {
             const userId = data.id;
-            fetch(`http://dove.task-manager-backend.c66.me/users/${userId}/tasks`, {
+            fetch(`https://dove.task-manager-backend.c66.me/users/${userId}/tasks`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json'
