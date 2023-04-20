@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Typography, Stack, LinearProgress, Button, Alert, AlertTitle } from '@mui/material';
+import { Box, Typography, Stack, Button } from '@mui/material';
 import { TaskDateField } from './_taskDateField';
 import { TaskDescriptionField } from './_taskDescriptionField';
 import { TaskSelectField } from './_taskSelectField';
@@ -12,20 +12,49 @@ export const CreateTaskForm = () => {
     const [date, setDate] = useState(new Date());
     const [status, setStatus] = useState('to-do');
     const [priority, setPriority] = useState('normal');
-    const [showSuccess, setShowSuccess] = useState(false);
+
+    const formattedDate = date.toISOString().split('T')[0];
+    console.log(formattedDate)
+
+    // const userEmail = localStorage.getItem('user').replace(/"/g, '')
+    // console.log(userEmail)
 
     function createTaskHandler() {
-        if(!title || !date || !description) {
-            return;
+        if (!title || !date || !description) {
+          return;
         };
-        const task = {
-            title,
-            description,
-            date,
-            status,
-            priority,
-        };
-    };
+        const userEmail = localStorage.getItem('user').replace(/"/g, '');
+        fetch(`http://dove.task-manager-backend.c66.me/users/search?email=${userEmail}`)
+          .then(response => response.json())
+          .then(data => {
+            const userId = data.id;
+            fetch(`http://dove.task-manager-backend.c66.me/users/${userId}/tasks`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                title: title,
+                description: description,
+                priority: priority,
+                status: status,
+                due_date: formattedDate
+              })
+            })
+            .then(response => {
+              if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+              }
+              return response.json();
+            })
+            .then(data => {
+              console.log('Task created:', data);
+            })
+            .catch(error => console.log('Error creating task:', error));
+          })
+          .catch(error => console.log('Error fetching user data:', error));
+      };
+      
 
   
 
@@ -38,15 +67,6 @@ export const CreateTaskForm = () => {
             px={4}
             my={6}
         >
-            {showSuccess && (
-                  <Alert
-                  severity='success'
-                  sx={{width: '100%', marginBottom: '16px'}}
-              >
-                  <AlertTitle>Success</AlertTitle>
-                  The task has been created successfully
-              </Alert>
-            )}
             <Typography mb={2} component='h2' variant='h6'>
                 Create A Task
             </Typography>
@@ -54,18 +74,15 @@ export const CreateTaskForm = () => {
                 {/* Title of task */}
                 <TaskTitleField 
                     onChange={(e) => setTitle(e.target.value)}
-                    // disabled={createTaskMutation.isLoading}
                 />
                 {/* Task Description */}
                 <TaskDescriptionField 
                     onChange={(e) => setDescription(e.target.value)}
-                    // disabled={createTaskMutation.isLoading}
                 />
                 {/* Date */}
                 <TaskDateField 
                     value={date}
                     onChange={(date) => setDate(date)}
-                    // disabled={createTaskMutation.isLoading}
                 />
                 <Stack direction='row' spacing={2}>
                     {/* Task Status & Priority */}
@@ -73,42 +90,39 @@ export const CreateTaskForm = () => {
                         label='Status' 
                         name='status'
                         value={status}
-                        // disabled={createTaskMutation.isLoading}
                         onChange={(e) => setStatus(e.target.value)}
-                        // items={[
-                        //     {
-                        //         value: Status.todo,
-                        //         label: Status.todo,
-                        //     },
-                        //     {
-                        //         value: Status.inProgress,
-                        //         label: Status.inProgress,
-                        //     },
-                    // ]} 
+                        items={[
+                            {
+                                value: 'to-do',
+                                label: 'to-do',
+                            },
+                            {
+                                value: 'inProgress',
+                                label: 'inProgress',
+                            },
+                    ]} 
                     />
                     <TaskSelectField 
                         label='Priority' 
                         name='priority' 
                         value={priority}
-                        // disabled={createTaskMutation.isLoading}
                         onChange={(e) => setPriority(e.target.value)}
-                        // items={[
-                        //     {
-                        //         value: Priority.low,
-                        //         label: Priority.low,
-                        //     },
-                        //     {
-                        //         value: Priority.normal,
-                        //         label: Priority.normal,
-                        //     },
-                        //     {
-                        //         value: Priority.high,
-                        //         label: Priority.high,
-                        //     },
-                        // ]} 
+                        items={[
+                            {
+                                value: 'low',
+                                label: 'low',
+                            },
+                            {
+                                value: 'normal',
+                                label: 'normal',
+                            },
+                            {
+                                value: 'high',
+                                label: 'high',
+                            },
+                        ]} 
                     />
                 </Stack>
-                {/* {createTaskMutation.isLoading && <LinearProgress />} */}
                 <Button
                     disabled={
                         !title ||
