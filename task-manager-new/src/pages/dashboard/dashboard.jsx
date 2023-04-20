@@ -20,6 +20,7 @@ export const Dashboard = () => {
         console.log(data)
         console.log(`Logging in with username: ${username}`);
         setLoggedIn(true)
+        localStorage.setItem('user', JSON.stringify(data.email))
       })
       .catch(error => console.error(error))
       
@@ -41,7 +42,7 @@ export const Dashboard = () => {
             console.log(data);
             console.log(`Signing up with username: ${username}`)
             setLoggedIn(true)
-    
+            localStorage.setItem('user', JSON.stringify(data.email))
         })
         .catch(error => console.log(error))
     }
@@ -54,25 +55,32 @@ export const Dashboard = () => {
            <Sidebar />
         </Grid>
         ) : (
-            <div>
+            <div
+                style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '100px'}}
+            >
+            <h1>SESL Task Manager</h1>
             <TextField
               label="Username"
               variant="outlined"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
+              style={{margin: '7px'}}
             />
               <TextField
               label="Email"
               variant="outlined"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              style={{margin: '7px'}}
             />
-            <Button variant="contained" onClick={handleLogin}>
-              Login
-            </Button>
-            <Button variant="contained" onClick={handleSignup}>
-              Signup
-            </Button>
+            <div>
+                <Button variant="contained" onClick={handleLogin} style={{margin: '7px'}}>
+                Login
+                </Button>
+                <Button variant="contained" onClick={handleSignup} style={{margin: '7px'}}>
+                Signup
+                </Button>
+            </div>
           </div>
          )}
         </>
