@@ -123,11 +123,13 @@ export const TaskFooter = (props) => {
   return (
     <Box
       display="flex"
+      flexDirection="column"
       justifyContent="space-between"
       alignItems="center"
       my={4}
     >
-      {status === "completed" ? (
+    <div>
+    {status === "completed" ? (
         <Typography sx={{ fontWeight: "bold", color: "success.main" }}>
           COMPLETE
         </Typography>
@@ -183,7 +185,10 @@ export const TaskFooter = (props) => {
       >
         Delete
       </Button>
+    </div>
+      
       {isEditing && (
+        
         <Box
           display="flex"
           flexDirection="column"
