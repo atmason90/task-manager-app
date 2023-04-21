@@ -7,7 +7,7 @@ export const Sidebar = ({createTaskHandler, setTaskData }) => {
   const email = localStorage.getItem('user').replace(/"/g, '');
     const [username, setUsername] = useState('')
   
-    fetch(`http://dove.task-manager-backend.c66.me/users/search?email=${email}`)
+    fetch(`https://dove.task-manager-backend.c66.me/users/search?email=${email}`)
     .then(response => response.json())
     .then(data => {
       setUsername(data.name)

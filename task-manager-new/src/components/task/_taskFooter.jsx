@@ -4,6 +4,7 @@ import {
     Button,
     FormControlLabel,
     Switch,
+    Typography
 } from '@mui/material';
 import PropTypes from 'prop-types';
 
@@ -14,8 +15,52 @@ export const TaskFooter = (props) => {
     id,
     status,
     onStatusChange = (e) => console.log(e),
-    onClick = (e) => console.log(e)
-  } = props;   
+    onDelete = (e) => console.log(e)
+  } = props;  
+  
+  const updateTaskStatus = (newStatus) => {
+    const userEmail = localStorage.getItem("user").replace(/"/g, "");
+    fetch(
+      `https://dove.task-manager-backend.c66.me/users/search?email=${userEmail}`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        const userId = data.id;
+        fetch(`https://dove.task-manager-backend.c66.me/users/${userId}/tasks/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({status: newStatus })
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        onStatusChange(data.status)
+    })
+    .catch(error => console.error(error))
+  }
+
+  const deleteTask = () => {
+    const userEmail = localStorage.getItem("user").replace(/"/g, "");
+    fetch(
+      `https://dove.task-manager-backend.c66.me/users/search?email=${userEmail}`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        const userId = data.id;
+        return fetch(`https://dove.task-manager-backend.c66.me/users/${userId}/tasks/${id}`, {
+          method: 'DELETE',
+        });
+      })
+      .then(() => {
+        // If the task was deleted successfully, call a callback function to notify the parent component
+        // You can define the callback function as a prop and pass it down to TaskFooter
+        onDelete(id);
+      })
+      .catch(error => console.error(error));
+  };
+  
   return (
    <Box
     display='flex'
@@ -23,22 +68,34 @@ export const TaskFooter = (props) => {
     alignItems='center'
     my={4}
    >
-    <FormControlLabel 
-        label='In Progress'
-        control={
-            <Switch 
-                onChange={(e) => onStatusChange(e, id)}
-                color='warning'
-                defaultChecked={status === 'inProgress'}
+   {status === 'completed' ? (
+        <Typography sx={{ fontWeight: 'bold', color: 'success.main' }}>
+          COMPLETE
+        </Typography>
+      ) : (
+        <FormControlLabel
+          label='In Progress'
+          control={
+            <Switch
+              onChange={(e) => {
+                const newStatus = e.target.checked ? 'inProgress' : 'todo';
+                updateTaskStatus(newStatus);
+              }}
+              color='warning'
+              defaultChecked={status === 'inProgress'}
             />
-        }
-    />
+          }
+        />
+      )}
     <Button
         variant='contained'
         color='success'
         size='small'
         sx={{color: '#ffffff'}}
-        onClick={(e) => onClick(e, id)}
+        onClick={(e) => {
+            updateTaskStatus('completed')
+        }}
+        disabled={status === 'completed'}
     >
         Complete
     </Button>
@@ -56,7 +113,7 @@ export const TaskFooter = (props) => {
         color='error'
         size='small'
         sx={{color: '#ffffff'}}
-        // onClick={(e) => onClick(e, id)}
+        onClick={deleteTask}
     >
         Delete
     </Button>
