@@ -11,3 +11,11 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+@media screen and (max-width: 900px) {
+  .css-d1nc7y-MuiGrid-root{
+    position: relative;
+  }
+}
+
+

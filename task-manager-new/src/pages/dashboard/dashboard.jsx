@@ -51,8 +51,9 @@ export const Dashboard = () => {
         <>
         {loggedIn ? (
         <Grid container minHeight="100vh" p={0} m={0}>
-           <Taskarea />
-           <Sidebar />
+                <Sidebar />
+                <Taskarea />
+                
         </Grid>
         ) : (
             <div
