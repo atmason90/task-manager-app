@@ -69,13 +69,13 @@ export const Dashboard = () => {
             >
             {(errorMessage != "") ? <h3 style={{color: 'red'}}>{errorMessage}</h3> : null}
             <h1>SESL Task Manager</h1>
-                <TextField
-                label="Username"
-                variant="outlined"
-                value={email}
-                onChange={(e) => setEmail(e.target.value) && setErrorMessage("")}
-                style={{margin: '7px'}}
-                />
+            <TextField
+            label="Username"
+            variant="outlined"
+            value={email}
+            onChange={(e) => setEmail(e.target.value) && setErrorMessage("")}
+            style={{margin: '7px'}}
+            />
             <div>
                 <Button variant="contained" onClick={handleLogin} style={{margin: '7px'}}>
                 Login
