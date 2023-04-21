@@ -3,3 +3,5 @@ task-manager-backend/tmp/*
 task-manager-backend/tmp/pids/*
 
 .idea
+
+node_modules
