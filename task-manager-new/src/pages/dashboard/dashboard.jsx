@@ -18,7 +18,7 @@ export const Dashboard = () => {
       fetch(`https://dove.task-manager-backend.c66.me/users/search?email=${email}`)
       .then(response => {
         if (response.status == 404) {
-            setErrorMessage("User does not exist. Please try again with a valid email!");
+            setErrorMessage("User does not exist. Please try again!");
             throw new Error("User does not exist");
         } else {
             return response.json()
@@ -41,7 +41,8 @@ export const Dashboard = () => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                name: username,
+                // Signup will use email for both username and email
+                name: email,
                 email: email
             })
         })
@@ -68,13 +69,13 @@ export const Dashboard = () => {
             >
             {(errorMessage != "") ? <h3 style={{color: 'red'}}>{errorMessage}</h3> : null}
             <h1>SESL Task Manager</h1>
-              <TextField
-              label="Email"
-              variant="outlined"
-              value={email}
-              onChange={(e) => setEmail(e.target.value) && setErrorMessage("")}
-              style={{margin: '7px'}}
-            />
+                <TextField
+                label="Username"
+                variant="outlined"
+                value={email}
+                onChange={(e) => setEmail(e.target.value) && setErrorMessage("")}
+                style={{margin: '7px'}}
+                />
             <div>
                 <Button variant="contained" onClick={handleLogin} style={{margin: '7px'}}>
                 Login
