@@ -29,7 +29,7 @@ export const TaskFooter = (props) => {
             <Switch 
                 onChange={(e) => onStatusChange(e, id)}
                 color='warning'
-                // defaultChecked={status === Status.inProgress}
+                defaultChecked={status === 'inProgress'}
             />
         }
     />
@@ -40,7 +40,7 @@ export const TaskFooter = (props) => {
         sx={{color: '#ffffff'}}
         onClick={(e) => onClick(e, id)}
     >
-        Mark Complete
+        Complete
     </Button>
     <Button
         variant='contained'

@@ -10,7 +10,6 @@ export const Profile = (props) => {
     fetch(`http://dove.task-manager-backend.c66.me/users/search?email=${email}`)
     .then(response => response.json())
     .then(data => {
-      console.log(data)  
       setUsername(data.name)
     })
     .catch(error => console.error(error))

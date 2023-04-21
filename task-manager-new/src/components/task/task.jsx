@@ -10,7 +10,7 @@ export const Task = (props) => {
     // Destructure props
     const { 
         title = 'Test Title', 
-        date = new Date(), 
+        due_date = null,
         description = 'Lorem ipsum dolor sit amet', 
         priority = 'normal',
         status = 'completed',
@@ -36,9 +36,9 @@ export const Task = (props) => {
             }}
         >
             {/* task header */}
-            <TaskHeader title={title} date={date} />
+            <TaskHeader title={title} due_date={due_date} />
             {/* task description */}
-            <TaskDescription description={description} />
+            <TaskDescription description={description} priority={priority} />
             {/* task footer */}
             <TaskFooter 
                 onClick={onClick} 
@@ -53,7 +53,7 @@ export const Task = (props) => {
 
 Task.propTypes = {
     title: PropTypes.string,
-    date: PropTypes.instanceOf(Date),
+    due_date: PropTypes.string,
     description: PropTypes.string,
     onStatusChange: PropTypes.func,
     onClick: PropTypes.func,

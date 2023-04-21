@@ -5,7 +5,8 @@ import PropTypes from 'prop-types';
 
 export const TaskHeader = (props) => {
   // Destructure props
-  const { title='Default Title', date=new Date()} = props
+  const { title='Default Title', due_date=null} = props
+  const formattedDueDate = due_date ? format(new Date(due_date), 'PPP') : new Date(due_date).toLocaleDateString()
   return (
     <Box
         display='flex'
@@ -21,7 +22,7 @@ export const TaskHeader = (props) => {
         <Box>
             <Chip
                 variant='outlined'
-                label={format(date, 'PPP')}
+                label={formattedDueDate}
             />
         </Box>
     </Box>
@@ -30,5 +31,5 @@ export const TaskHeader = (props) => {
 
 TaskHeader.propTypes = {
     title: PropTypes.string,
-    date: PropTypes.instanceOf(Date),
+    due_date: PropTypes.string,
 };

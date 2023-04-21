@@ -3,8 +3,8 @@ import { Grid } from '@mui/material';
 import { Profile } from '../profile/profile';
 import { CreateTaskForm } from '../createTaskForm/createTaskForm';
 
-export const Sidebar = () => {
-  const email = localStorage.getItem('user')
+export const Sidebar = ({createTaskHandler, setTaskData }) => {
+  const email = localStorage.getItem('user').replace(/"/g, '');
     const [username, setUsername] = useState('')
   
     fetch(`http://dove.task-manager-backend.c66.me/users/search?email=${email}`)
@@ -28,7 +28,7 @@ export const Sidebar = () => {
         alignItems: 'center',
     }}>
         <Profile name={username} />
-        <CreateTaskForm />
+        <CreateTaskForm createTaskHandler={createTaskHandler}/>
     </Grid>
   )
 }

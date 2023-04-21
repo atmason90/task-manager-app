@@ -5,16 +5,15 @@ import { TaskDescriptionField } from './_taskDescriptionField';
 import { TaskSelectField } from './_taskSelectField';
 import { TaskTitleField } from './_taskTitleField';
 
-export const CreateTaskForm = () => {
+export const CreateTaskForm = ({ setTaskData }) => {
     // Declare states
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [date, setDate] = useState(new Date());
-    const [status, setStatus] = useState('to-do');
+    const [status, setStatus] = useState('todo');
     const [priority, setPriority] = useState('normal');
 
     const formattedDate = date.toISOString().split('T')[0];
-    console.log(formattedDate)
 
     // const userEmail = localStorage.getItem('user').replace(/"/g, '')
     // console.log(userEmail)
@@ -48,7 +47,7 @@ export const CreateTaskForm = () => {
               return response.json();
             })
             .then(data => {
-              console.log('Task created:', data);
+              setTaskData(prevTaskData => [...prevTaskData, data])
             })
             .catch(error => console.log('Error creating task:', error));
           })
@@ -93,8 +92,8 @@ export const CreateTaskForm = () => {
                         onChange={(e) => setStatus(e.target.value)}
                         items={[
                             {
-                                value: 'to-do',
-                                label: 'to-do',
+                                value: 'todo',
+                                label: 'todo',
                             },
                             {
                                 value: 'inProgress',
