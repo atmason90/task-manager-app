@@ -44,7 +44,11 @@ export const Task = (props) => {
                 onClick={onClick} 
                 onStatusChange={onStatusChange} 
                 id={id}
+                title={title}
+                due_date={due_date}
                 status={status}
+                priority={priority}
+                description={description}
             />
 
         </Box>
